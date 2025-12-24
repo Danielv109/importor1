@@ -25,6 +25,7 @@ class UIManager {
       revealCardSwipe: document.getElementById("revealCardSwipe"),
       cardFront: document.getElementById("cardFront"),
       cardBack: document.getElementById("cardBack"),
+      avatarImage: document.getElementById("avatarImage"),
     };
 
     this.playerNames = ["Jugador 1", "Jugador 2", "Jugador 3", "Jugador 4"];
@@ -44,7 +45,6 @@ class UIManager {
     ];
 
     this.initializeEventListeners();
-    this.initializeCardSwipe();
     this.updateUI();
   }
 
@@ -60,46 +60,31 @@ class UIManager {
    * Establece el avatar de fondo en la tarjeta
    */
   setRandomAvatarBackground() {
-    const cardFront = this.elements.cardFront;
+    const avatarImage = this.elements.avatarImage;
     const randomAvatar = this.getRandomAvatar();
 
-    // Limpiar estilos anteriores
-    cardFront.style.backgroundImage = "";
-
-    // Crear una imagen para verificar si carga
     const img = new Image();
     img.onload = () => {
-      // Imagen cargada exitosamente
-      cardFront.style.backgroundImage = `url('${randomAvatar}')`;
-      cardFront.style.backgroundSize = "cover";
-      cardFront.style.backgroundPosition = "center";
-      cardFront.style.backgroundRepeat = "no-repeat";
-      console.log("✅ Avatar cargado correctamente:", randomAvatar);
+      avatarImage.style.backgroundImage = `url('${randomAvatar}')`;
+      console.log("✅ Avatar cargado:", randomAvatar);
     };
 
     img.onerror = () => {
-      // Error al cargar la imagen
-      console.error("❌ Error al cargar avatar:", randomAvatar);
-      console.log(
-        "💡 La carpeta img/avatars/ no existe o las imágenes no están guardadas"
-      );
-
-      // Usar un gradiente de color como fallback
+      console.error("❌ No se encontró la imagen:", randomAvatar);
       const colors = [
-        "#FF6B6B",
-        "#4ECDC4",
-        "#45B7D1",
-        "#FFA07A",
-        "#98D8C8",
-        "#F7DC6F",
-        "#BB8FCE",
-        "#85C1E2",
+        "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+        "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+        "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
+        "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+        "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
+        "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+        "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",
       ];
-      const randomColor = colors[Math.floor(Math.random() * colors.length)];
-      cardFront.style.background = `linear-gradient(135deg, ${randomColor}40 0%, ${randomColor}20 100%)`;
+      const randomGradient = colors[Math.floor(Math.random() * colors.length)];
+      avatarImage.style.backgroundImage = randomGradient;
     };
 
-    // Intentar cargar la imagen
     img.src = randomAvatar;
   }
 
@@ -138,12 +123,9 @@ class UIManager {
       this.startGame();
     });
 
-    // Botón "Estoy Listo"
+    // Solo botón "Estoy Listo" para revelar
     document.getElementById("readyBtnNew").addEventListener("click", () => {
-      this.elements.cardFront.classList.add("hidden");
-      this.elements.cardBack.classList.add("visible");
-      this.isRevealed = true;
-      this.displayRoleInSwipe();
+      this.revealRole();
     });
 
     // Botón "Siguiente Jugador"
@@ -161,104 +143,13 @@ class UIManager {
   }
 
   /**
-   * Inicializa el sistema de deslizar la tarjeta
+   * Revela el rol al presionar el botón
    */
-  initializeCardSwipe() {
-    const card = this.elements.revealCardSwipe;
-    const cardFront = this.elements.cardFront;
-    const cardBack = this.elements.cardBack;
-
-    let startY = 0;
-    let currentY = 0;
-    let isDragging = false;
-
-    const revealCard = () => {
-      cardFront.classList.add("hidden");
-      cardBack.classList.add("visible");
-      this.isRevealed = true;
-      this.displayRoleInSwipe();
-    };
-
-    // Touch events
-    card.addEventListener("touchstart", (e) => {
-      if (this.isRevealed) return;
-      startY = e.touches[0].clientY;
-      isDragging = true;
-      card.classList.add("swiping");
-    });
-
-    card.addEventListener("touchmove", (e) => {
-      if (!isDragging || this.isRevealed) return;
-
-      currentY = e.touches[0].clientY;
-      const diffY = startY - currentY;
-
-      // Solo permitir deslizar hacia arriba
-      if (diffY > 0) {
-        const scale = 1 + diffY / 1000;
-        card.style.transform = `translateY(-${diffY * 0.5}px) scale(${Math.min(
-          scale,
-          1.05
-        )})`;
-      }
-    });
-
-    card.addEventListener("touchend", () => {
-      if (!isDragging || this.isRevealed) return;
-
-      isDragging = false;
-      card.classList.remove("swiping");
-
-      const diffY = startY - currentY;
-
-      // Si deslizó más de 80px, revelar
-      if (diffY > 80) {
-        card.style.transform = "translateY(0) scale(1)";
-        revealCard();
-      } else {
-        card.style.transform = "translateY(0) scale(1)";
-      }
-    });
-
-    // Mouse events
-    card.addEventListener("mousedown", (e) => {
-      if (this.isRevealed) return;
-      startY = e.clientY;
-      isDragging = true;
-      card.classList.add("swiping");
-      e.preventDefault();
-    });
-
-    document.addEventListener("mousemove", (e) => {
-      if (!isDragging || this.isRevealed) return;
-
-      currentY = e.clientY;
-      const diffY = startY - currentY;
-
-      if (diffY > 0) {
-        const scale = 1 + diffY / 1000;
-        card.style.transform = `translateY(-${diffY * 0.5}px) scale(${Math.min(
-          scale,
-          1.05
-        )})`;
-      }
-    });
-
-    document.addEventListener("mouseup", () => {
-      if (!isDragging || this.isRevealed) return;
-
-      isDragging = false;
-      card.classList.remove("swiping");
-
-      const diffY = startY - currentY;
-
-      if (diffY > 80) {
-        card.style.transform = "translateY(0) scale(1)";
-        revealCard();
-      } else {
-        card.style.transform = "translateY(0) scale(1)";
-      }
-    });
+  revealRole() {
+    this.elements.cardFront.classList.add("hidden");
+    this.elements.cardBack.classList.add("visible");
+    this.isRevealed = true;
+    this.displayRoleInSwipe();
   }
 
   /**
@@ -268,7 +159,6 @@ class UIManager {
     this.isRevealed = false;
     this.elements.cardFront.classList.remove("hidden");
     this.elements.cardBack.classList.remove("visible");
-    this.elements.revealCardSwipe.style.transform = "translateY(0) scale(1)";
   }
 
   /**
@@ -290,13 +180,13 @@ class UIManager {
 
       if (state.useHintWord && hintWord) {
         impostorHTML += `
-          <p style="font-size: 1rem; opacity: 0.9; margin-top: 20px; color: white;">Tu pista es:</p>
-          <div class="hint-word">${hintWord}</div>
-          <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 15px; color: white;">Usa esta pista para disimular</p>
+          <p style="font-size: 1rem; opacity: 0.7; margin-top: 20px; color: #666;">Tu pista es:</p>
+          <div class="hint-word" style="color: #FFD700; background: #FFF9E6; padding: 15px; border-radius: 15px;">${hintWord}</div>
+          <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 15px; color: #666;">Usa esta pista para disimular</p>
         `;
       } else {
         impostorHTML += `
-          <p style="font-size: 1rem; opacity: 0.9; margin-top: 15px; color: white;">No conoces la palabra secreta.<br>Actúa con astucia.</p>
+          <p style="font-size: 1rem; opacity: 0.7; margin-top: 15px; color: #666;">No conoces la palabra secreta.<br>Actúa con astucia.</p>
         `;
       }
 
@@ -304,9 +194,9 @@ class UIManager {
     } else {
       this.elements.roleContentSwipe.innerHTML = `
                 <div class="role-badge citizen">CIUDADANO</div>
-                <p style="font-size: 1rem; margin-top: 20px; margin-bottom: 10px; color: rgba(255,255,255,0.9);">La palabra secreta es:</p>
+                <p style="font-size: 1rem; margin-top: 20px; margin-bottom: 10px; color: #666;">La palabra secreta es:</p>
                 <div class="word-display">${secretWord}</div>
-                <p style="font-size: 0.9rem; opacity: 0.85; margin-top: 15px; color: rgba(255,255,255,0.85);">Memorízala y encuentra al impostor.</p>
+                <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 15px; color: #666;">Memorízala y encuentra al impostor.</p>
             `;
     }
   }
