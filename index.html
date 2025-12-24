@@ -136,12 +136,16 @@
       <!-- Pantalla de Pasar Teléfono CON REVEAL INTEGRADO -->
       <div id="passPhoneScreen" class="screen">
         <div class="reveal-container">
-          <!-- Tarjeta deslizable -->
+          <!-- Contenedor completo -->
           <div class="reveal-card-swipe" id="revealCardSwipe">
-            <div class="card-handle"></div>
-
-            <!-- Vista inicial (antes de deslizar) -->
+            <!-- Vista inicial (antes de revelar) -->
             <div class="card-front" id="cardFront">
+              <!-- SOLO LA IMAGEN EN CONTENEDOR BLANCO -->
+              <div class="image-container">
+                <div class="avatar-image" id="avatarImage"></div>
+              </div>
+
+              <!-- TEXTO Y BOTÓN FUERA DEL CONTENEDOR BLANCO -->
               <p class="card-label">Pásale el teléfono a:</p>
               <div class="player-name-big" id="currentPlayerNameDisplay">
                 Jugador 1
@@ -151,7 +155,7 @@
               </button>
             </div>
 
-            <!-- Vista revelada (después de deslizar) -->
+            <!-- Vista revelada (después de presionar el botón) -->
             <div class="card-back" id="cardBack">
               <div id="roleContentSwipe"></div>
               <button class="btn btn-secondary btn-next" id="nextPlayerBtn">
