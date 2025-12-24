@@ -1,0 +1,808 @@
+/* Reset y configuración base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: "Inter", "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: linear-gradient(135deg, #ff4b2b 0%, #ff416c 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+/* Animaciones globales */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+/* Contenedor principal */
+.container {
+  width: 100%;
+  max-width: 500px;
+  animation: fadeIn 0.5s ease-in;
+}
+
+/* Pantallas */
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.screen.hiding {
+  animation: fadeOut 0.3s ease-out;
+}
+
+/* Tarjetas */
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+}
+
+.card.dark {
+  background: #2d2d2d;
+  color: white;
+}
+
+/* Tipografía */
+h1 {
+  font-size: 2.5rem;
+  color: white;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 800;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.subtitle {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  margin-top: -20px;
+  margin-bottom: 30px;
+}
+
+/* Grupos de entrada */
+.input-group {
+  margin-bottom: 25px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+}
+
+.card.dark label {
+  color: #e0e0e0;
+}
+
+/* Botones de configuración estilo iOS */
+.config-button {
+  width: 100%;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 15px;
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  touch-action: manipulation;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.config-button:active {
+  transform: scale(0.98);
+  background: #e8e8e8;
+}
+
+.config-icon {
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Toggle Switch estilo iPhone */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 51px;
+  height: 31px;
+}
+
+.toggle-switch input[type="checkbox"] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 31px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 25px;
+  width: 25px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: #4caf50;
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(20px);
+}
+
+.toggle-switch input:focus + .toggle-slider {
+  box-shadow: 0 0 1px #4caf50;
+}
+
+/* Botones principales */
+.btn {
+  width: 100%;
+  padding: 18px;
+  border: none;
+  border-radius: 15px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  touch-action: manipulation;
+}
+
+.btn-primary {
+  background: #2d2d2d;
+  color: white;
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+  background: #1a1a1a;
+}
+
+.btn-warning {
+  background: #ffd700;
+  color: #2d2d2d;
+}
+
+.btn-warning:active {
+  transform: scale(0.98);
+  background: #ffc700;
+}
+
+.btn-secondary {
+  background: white;
+  color: #2d2d2d;
+  margin-top: 15px;
+}
+
+.btn-secondary:active {
+  transform: scale(0.98);
+  background: #f0f0f0;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s;
+  padding: 20px;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 20px;
+  padding: 0;
+  max-width: 500px;
+  width: 100%;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #2d2d2d;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.modal-close:active {
+  background: #f0f0f0;
+}
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal-footer {
+  padding: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* Lista de jugadores */
+.players-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+.player-item-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.player-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px;
+  background: #f5f5f5;
+  border-radius: 12px;
+  position: relative;
+  transition: transform 0.3s ease;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.player-item.swiping {
+  cursor: grabbing;
+}
+
+.player-item-delete-bg {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  background: #ff4b2b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.player-number-badge {
+  width: 40px;
+  height: 40px;
+  background: #ff4b2b;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.player-input {
+  flex: 1;
+  border: none;
+  background: white;
+  padding: 12px 15px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  pointer-events: auto;
+}
+
+.player-input:focus {
+  outline: 2px solid #ff4b2b;
+}
+
+.player-remove {
+  display: none;
+}
+
+.add-player-btn {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  color: #4caf50;
+  border: 2px solid #4caf50;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: inherit;
+}
+
+.add-player-btn:hover {
+  background: rgba(76, 175, 76, 0.05);
+}
+
+.add-player-btn:active {
+  transform: scale(0.98);
+  background: rgba(76, 175, 76, 0.1);
+}
+
+.add-player-btn:disabled {
+  border-color: #ccc;
+  color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.add-player-btn:disabled:hover {
+  background: transparent;
+  transform: none;
+}
+
+.add-player-btn::before {
+  content: "+";
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+/* Selectores numéricos */
+.number-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.number-input button {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  border: none;
+  background: #2d2d2d;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  touch-action: manipulation;
+}
+
+.number-input button:active {
+  transform: scale(0.95);
+  background: #1a1a1a;
+}
+
+.number-input button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.number-input span {
+  font-size: 2rem;
+  font-weight: 700;
+  min-width: 60px;
+  text-align: center;
+  color: #2d2d2d;
+}
+
+.card.dark .number-input span {
+  color: white;
+}
+
+/* Categorías en modal */
+.categories-modal {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.category-item-modal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  background: #f5f5f5;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.category-item-modal:active {
+  transform: scale(0.98);
+}
+
+.category-item-modal.selected {
+  background: #ffd700;
+}
+
+.category-item-modal input[type="checkbox"] {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  accent-color: #2d2d2d;
+}
+
+/* Contenedor de reveal con tarjeta */
+.reveal-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ff4b2b 0%, #ff416c 100%);
+  padding: 20px;
+  overflow: hidden;
+}
+
+/* Tarjeta reveladora */
+.reveal-card-swipe {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  touch-action: pan-y;
+}
+
+.reveal-card-swipe.swiping {
+  transition: none;
+}
+
+/* Manija de deslizar */
+.card-handle {
+  width: 40px;
+  height: 5px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  margin: 12px auto;
+}
+
+/* Vista frontal con imagen de fondo */
+.card-front {
+  padding: 40px 30px;
+  text-align: center;
+  transition: opacity 0.3s, transform 0.3s;
+  position: relative;
+  overflow: hidden;
+  min-height: 350px;
+  background-color: white;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.card-front::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.75);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.card-front > * {
+  position: relative;
+  z-index: 1;
+}
+
+.card-front.hidden {
+  opacity: 0;
+  transform: translateY(-20px);
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+}
+
+.card-label {
+  font-size: 1.2rem;
+  color: #2d2d2d;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.player-name-big {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #ff4b2b;
+  margin: 20px 0 40px 0;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.btn-ready {
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Vista trasera (revelada) */
+.card-back {
+  padding: 40px 30px;
+  text-align: center;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #2d2d2d;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.card-back.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.card-back #roleContentSwipe {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.btn-next {
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Ajustes para el contenido del rol en la tarjeta */
+.card-back .role-badge {
+  margin-bottom: 15px;
+}
+
+.card-back .word-display {
+  font-size: 2.2rem;
+  margin: 20px 0;
+}
+
+.card-back .hint-word {
+  font-size: 1.8rem;
+  margin: 20px 0;
+}
+
+.card-back .impostor-icon {
+  font-size: 4rem;
+  margin: 15px 0;
+}
+
+.card-back .impostor-alert {
+  font-size: 1.8rem;
+  margin: 15px 0;
+}
+
+/* Estilos de roles */
+.word-display {
+  font-size: 3rem;
+  font-weight: 900;
+  color: white;
+  margin: 30px 0;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-align: center;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.hint-word {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffd700;
+  margin: 30px 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.role-badge.citizen {
+  background: #2196f3;
+  color: white;
+}
+
+.role-badge.impostor {
+  background: #ff4b2b;
+  color: white;
+}
+
+.impostor-alert {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ff4b2b;
+  margin: 20px 0;
+  text-transform: uppercase;
+}
+
+.impostor-icon {
+  font-size: 5rem;
+  margin: 20px 0;
+}
+
+/* Pantalla de juego */
+.game-info {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.game-info h3 {
+  font-size: 1.3rem;
+  color: #2d2d2d;
+  margin-bottom: 15px;
+}
+
+.first-player {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ff4b2b;
+  margin: 20px 0;
+}
+
+/* Mensajes de error */
+.error-message {
+  background: #ff4b2b;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 600;
+  animation: shake 0.5s;
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .word-display {
+    font-size: 2rem;
+  }
+
+  .player-name-big {
+    font-size: 2rem;
+  }
+}
+
+/* Mejoras para PWA */
+@media (display-mode: standalone) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}

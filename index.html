@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="theme-color" content="#FF4B2B" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta
+      name="description"
+      content="Juego El Impostor - Encuentra al impostor entre los jugadores"
+    />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <title>El Impostor</title>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Pantalla de Inicio -->
+      <div id="homeScreen" class="screen active">
+        <h1>🕵️ EL IMPOSTOR</h1>
+        <p class="subtitle">¿Podrás encontrar al impostor?</p>
+
+        <div class="card">
+          <!-- NUEVA: Botón de Jugadores estilo modal -->
+          <div class="input-group">
+            <button class="config-button" id="playersConfigBtn" type="button">
+              <div style="display: flex; align-items: center; gap: 15px">
+                <span class="config-icon">👥</span>
+                <div style="flex: 1; text-align: left">
+                  <div style="font-weight: 600; font-size: 1rem">Jugadores</div>
+                  <div
+                    style="font-size: 0.85rem; opacity: 0.7"
+                    id="playersPreview"
+                  >
+                    4 jugadores
+                  </div>
+                </div>
+                <span style="font-size: 1.2rem; opacity: 0.5">›</span>
+              </div>
+            </button>
+          </div>
+
+          <!-- Botón de Impostores estilo modal -->
+          <div class="input-group">
+            <button class="config-button" id="impostorsConfigBtn" type="button">
+              <div style="display: flex; align-items: center; gap: 15px">
+                <span class="config-icon">🎭</span>
+                <div style="flex: 1; text-align: left">
+                  <div style="font-weight: 600; font-size: 1rem">
+                    Impostores
+                  </div>
+                  <div
+                    style="font-size: 0.85rem; opacity: 0.7"
+                    id="impostorsPreview"
+                  >
+                    1 impostor
+                  </div>
+                </div>
+                <span style="font-size: 1.2rem; opacity: 0.5">›</span>
+              </div>
+            </button>
+          </div>
+
+          <!-- Palabra Pista -->
+          <div class="input-group">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
+              <div style="display: flex; align-items: center; gap: 10px">
+                <span style="font-size: 1.3rem">🔍</span>
+                <label style="margin: 0; font-weight: 600">
+                  Pistas para el Impostor
+                </label>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="hintWordToggle" />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <p
+              style="
+                font-size: 0.85rem;
+                color: #666;
+                margin-top: 8px;
+                text-align: center;
+              "
+            >
+              El impostor verá una palabra relacionada como pista
+            </p>
+          </div>
+
+          <!-- Categorías -->
+          <div class="input-group">
+            <button
+              class="config-button"
+              id="categoriesConfigBtn"
+              type="button"
+            >
+              <div style="display: flex; align-items: center; gap: 15px">
+                <span class="config-icon">🎯</span>
+                <div style="flex: 1; text-align: left">
+                  <div style="font-weight: 600; font-size: 1rem">
+                    Categorías
+                  </div>
+                  <div
+                    style="font-size: 0.85rem; opacity: 0.7"
+                    id="categoriesPreview"
+                  >
+                    Ninguna +5
+                  </div>
+                </div>
+                <span style="font-size: 1.2rem; opacity: 0.5">›</span>
+              </div>
+            </button>
+          </div>
+
+          <div id="errorMessage"></div>
+
+          <button class="btn btn-primary" id="startGameBtn">
+            Comenzar Juego
+          </button>
+        </div>
+      </div>
+
+      <!-- Pantalla de Pasar Teléfono CON REVEAL INTEGRADO -->
+      <div id="passPhoneScreen" class="screen">
+        <div class="reveal-container">
+          <!-- Tarjeta deslizable -->
+          <div class="reveal-card-swipe" id="revealCardSwipe">
+            <div class="card-handle"></div>
+
+            <!-- Vista inicial (antes de deslizar) -->
+            <div class="card-front" id="cardFront">
+              <p class="card-label">Pásale el teléfono a:</p>
+              <div class="player-name-big" id="currentPlayerNameDisplay">
+                Jugador 1
+              </div>
+              <button class="btn btn-warning btn-ready" id="readyBtnNew">
+                ESTOY LISTO
+              </button>
+            </div>
+
+            <!-- Vista revelada (después de deslizar) -->
+            <div class="card-back" id="cardBack">
+              <div id="roleContentSwipe"></div>
+              <button class="btn btn-secondary btn-next" id="nextPlayerBtn">
+                Siguiente Jugador
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pantalla de Revelación (YA NO SE USA) -->
+      <div id="revealScreen" class="screen" style="display: none">
+        <div class="card dark reveal-card">
+          <div id="roleContent"></div>
+          <button class="btn btn-secondary" id="hideBtn">
+            Ocultar y Continuar
+          </button>
+        </div>
+      </div>
+
+      <!-- Pantalla de Juego -->
+      <div id="gameScreen" class="screen">
+        <h1>🎮 ¡A JUGAR!</h1>
+
+        <div class="card">
+          <div class="game-info">
+            <h3>Empieza:</h3>
+            <div class="first-player" id="firstPlayerDisplay">Jugador 1</div>
+          </div>
+
+          <button class="btn btn-warning" id="revealRolesBtn">
+            Revelar Roles
+          </button>
+          <button class="btn btn-secondary" id="restartBtn">Nuevo Juego</button>
+        </div>
+
+        <div
+          class="card dark"
+          id="rolesCard"
+          style="display: none; margin-top: 20px"
+        >
+          <h2 style="color: white; margin-bottom: 20px">Roles Asignados:</h2>
+          <div id="rolesDisplay"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+  </body>
+</html>
